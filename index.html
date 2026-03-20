@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Next Wave</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            color: white;
+            background: #020617;
+            overflow-x: hidden;
+            transition: background 0.8s;
+        }
+
+        /* glow */
+        .glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 150, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        /* HERO */
+        header {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 70px;
+            background: linear-gradient(90deg, #7dd3fc, #38bdf8);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+        }
+
+        /* STORY */
+        .story {
+            height: 400vh;
+        }
+
+        .story-text {
+            position: sticky;
+            top: 40%;
+            text-align: center;
+            font-size: 44px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 0.6s;
+        }
+
+        .story-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* SECTION */
+        section {
+            padding: 120px 10%;
+        }
+
+        /* CARD */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s;
+        }
+
+        .card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        /* TEAM CARD */
+        .team-card {
+            text-decoration: none;
+            color: white;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.3s;
+        }
+
+        /* 이미지 */
+        .card-inner img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        /* 역할 */
+        .role {
+            color: #38bdf8;
+        }
+
+        /* 설명 */
+        .desc {
+            opacity: 0;
+            transform: translateY(10px);
+            font-size: 14px;
+            color: #94a3b8;
+            transition: 0.3s;
+        }
+
+        /* hover */
+        .team-card:hover .desc {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-card:hover .card-inner {
+            box-shadow: 0 0 50px rgba(0, 150, 255, 0.4);
+        }
+
+        /* SNS 버튼 */
+        .social {
+            margin-top: 10px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .team-card:hover .social {
+            opacity: 1;
+        }
+
+        /* NAV */
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow" id="glow"></div>
+
+    <header>
+        <h1>Next Wave</h1>
+        <p class="subtitle">Build · Connect · Execute</p>
+    </header>
+
+    <div class="story">
+        <div class="story-text" id="t1">우리는 아이디어에서 시작합니다</div>
+        <div class="story-text" id="t2">사람을 모아 팀을 만듭니다</div>
+        <div class="story-text" id="t3">AI로 문제를 해결합니다</div>
+        <div class="story-text" id="t4">그리고 결과를 만듭니다</div>
+    </div>
+
+    <section id="team">
+        <h2>Team</h2>
+
+        <div class="grid">
+
+            <a href="#" class="team-card">
+                <div class="card-inner">
+                    <img src="https://via.placeholder.com/100">
+                    <h3>손성</h3>
+                    <p class="role">회장</p>
+                    <p class="desc">AI Builder & Leader</p>
+                    <div class="social">GitHub · Portfolio</div>
+                </div>
+            </a>
+
+            <a href="#" class="team-card">
+                <div class="card-inner">
+                    <img
+                        src="https://han4223429.github.io/portfolio/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAQppXhleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAafM8uCVxQontJLtq5WIt4qi-gygUNVsF5eiE4OJSpdA_uHCfukug3ZOMgFAxg_aem_zxKGgUztxk0j8J4E50iX2g#">
+                    <h3>김한용</h3>
+                    <p class="role">부회장</p>
+                    <p class="desc">Strategy & Growth</p>
+                    <div class="social">GitHub</div>
+                </div>
+            </a>
+
+            <a href="#" class="team-card">
+                <div class="card-inner">
+                    <img
+                        src="https://badwordfilter.github.io/portfolio/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleAQpoc9leHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAaffHAM5fbw_Pb1p6Q9fPSDGxCUacRY9a5778JXj8JpNXBpSE2qJKcWElOxvGw_aem_bxbpodR5s0pkcWegXMxDKA">
+                    <h3>이학주</h3>
+                    <p class="role">인사총괄</p>
+                    <p class="desc">HR & Organization</p>
+                    <div class="social">Portfolio</div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <div class="navbar">
+        <button onclick="go('team')">Team</button>
+    </div>
+
+    <script>
+        // glow
+        document.addEventListener('mousemove', e => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        // scroll story
+        const texts = document.querySelectorAll(".story-text");
+        const bg = ["#020617", "#0a2540", "#0f3b5f", "#124e66"];
+
+        window.addEventListener("scroll", () => {
+            const y = window.scrollY;
+            const h = window.innerHeight;
+
+            texts.forEach((t, i) => {
+                if (y > h * i && y < h * (i + 1)) {
+                    t.classList.add("show");
+                    document.body.style.background = bg[i];
+                } else {
+                    t.classList.remove("show");
+                }
+            });
+        });
+
+        // 이동
+        function go(id) {
+            document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+        }
+
+        // 🔥 3D 효과
+        document.querySelectorAll(".team-card").forEach(card => {
+            card.addEventListener("mousemove", e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const rotateX = -(y - rect.height / 2) / 15;
+                const rotateY = (x - rect.width / 2) / 15;
+
+                card.querySelector(".card-inner").style.transform =
+                    `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener("mouseleave", () => {
+                card.querySelector(".card-inner").style.transform = "rotateX(0) rotateY(0)";
+            });
+        });
+    </script>
+
+</body>
+
+</html>
