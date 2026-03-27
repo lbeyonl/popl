@@ -6,27 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXT WAVE</title>
 
+    <!-- SEO 및 소셜 미디어 공유(Open Graph) 설정 -->
+    <meta property="og:title" content="NEXT WAVE - 팀원 모집">
+    <meta property="og:description" content="아이디어에서 멈추지 않고 실행으로 증명하는 AI 팀. 지금 바로 지원하세요!">
+    <meta property="og:image" content="https://picsum.photos/800/400"> <!-- 실제 공유용 이미지 주소로 변경해주세요 -->
+
+    <!-- 폰트 설정 (Pretendard) -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
     <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+            /* 고정된 네비게이션 바 높이만큼 스크롤 위치 보정 */
+        }
+
         body {
             margin: 0;
             font-family: 'Pretendard', sans-serif;
-            color: white;
+            color: #f1f5f9;
             overflow-x: hidden;
             padding-top: 80px;
 
-            background:
-                radial-gradient(circle at 20% 30%, #0ea5e9 0%, #020617 40%),
-                radial-gradient(circle at 80% 70%, #6366f1 0%, #020617 40%);
+            background-color: #020617;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+            transition: background-color 0.8s ease;
         }
 
-        /* NAV */
         .nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
+            box-sizing: border-box;
             padding: 20px 10%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(12px);
             z-index: 100;
@@ -42,14 +61,13 @@
             color: white;
         }
 
-        /* HERO */
         .hero {
             height: 100vh;
             display: flex;
             align-items: center;
             padding: 0 10%;
             position: relative;
-            background: radial-gradient(circle at center, #0ea5e9, #020617);
+            background: transparent;
         }
 
         .hero::before {
@@ -57,11 +75,12 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: #6366f1;
-            filter: blur(150px);
-            top: 10%;
-            left: 60%;
-            opacity: 0.3;
+            background: #38bdf8;
+            filter: blur(200px);
+            top: 20%;
+            left: 50%;
+            opacity: 0.15;
+            z-index: -1;
         }
 
         .hero h1 {
@@ -74,7 +93,6 @@
             margin: 15px 0;
         }
 
-        /* BUTTON */
         .cta button {
             margin-right: 10px;
             padding: 14px 28px;
@@ -102,7 +120,6 @@
             color: white;
         }
 
-        /* SECTION */
         section {
             padding: 140px 10%;
         }
@@ -111,7 +128,6 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
-        /* STORY */
         .story {
             height: 400vh;
         }
@@ -131,7 +147,6 @@
             transform: translateY(0);
         }
 
-        /* STATS */
         .stats {
             display: flex;
             justify-content: space-around;
@@ -147,14 +162,12 @@
             font-size: 14px;
         }
 
-        /* GRID */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
         }
 
-        /* CARD */
         .card {
             padding: 30px;
             border-radius: 20px;
@@ -176,20 +189,17 @@
             margin-bottom: 15px;
         }
 
-        /* TEAM */
         .team img {
             width: 90px;
             height: 90px;
             border-radius: 50%;
         }
 
-        /* JOIN */
         .join {
             text-align: center;
             background: linear-gradient(180deg, transparent, #0f172a);
         }
 
-        /* FLOAT */
         .floating {
             position: fixed;
             bottom: 30px;
@@ -203,7 +213,6 @@
             box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
         }
 
-        /* FADE */
         .fade {
             opacity: 0;
             transform: translateY(40px);
@@ -213,6 +222,339 @@
         .fade.show {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* 챗봇 UI */
+        .chat-box {
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+            width: 350px;
+            height: 500px;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95));
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+        }
+
+        .chat-box.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .chat-close {
+            cursor: pointer;
+            color: #94a3b8;
+            transition: 0.2s;
+        }
+
+        .chat-close:hover {
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+
+        .msg.bot {
+            background: rgba(56, 189, 248, 0.1);
+            color: #e0f2fe;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg.user {
+            background: #38bdf8;
+            color: black;
+            font-weight: 500;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #38bdf8;
+        }
+
+        .chat-input-area button {
+            background: #38bdf8;
+            color: black;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chat-input-area button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .floating-chat {
+            position: fixed;
+            bottom: 30px;
+            right: 170px;
+            padding: 15px 25px;
+            background: transparent;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .floating-chat:hover {
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .chat-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .chat-options button {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #e0f2fe;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chat-options button:hover {
+            background: rgba(56, 189, 248, 0.3);
+        }
+
+        /* 직접 연락하기 모달 */
+        .contact-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 400px;
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .contact-modal.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .contact-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1999;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .contact-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .contact-modal h3 {
+            margin-top: 0;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .contact-form-group {
+            margin-bottom: 12px;
+        }
+
+        .contact-form-group label {
+            display: block;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .contact-form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form-group input:focus {
+            border-color: #38bdf8;
+            outline: none;
+        }
+
+        .contact-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .contact-buttons button {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .contact-buttons .cancel-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #38bdf8;
+        }
+
+        .contact-buttons .submit-btn {
+            background: #38bdf8;
+            color: black;
+        }
+
+        .contact-buttons .submit-btn:disabled {
+            background: #475569;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .chat-box {
+                right: 10px;
+                bottom: 80px;
+                width: calc(100% - 20px);
+                height: 400px;
+            }
+
+            .floating-chat {
+                right: 140px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* 모바일 화면 최적화 (네비게이션 바) */
+        @media (max-width: 768px) {
+            html {
+                scroll-padding-top: 110px;
+                /* 모바일 네비게이션 바 높이에 맞게 보정 */
+            }
+
+            .nav {
+                flex-direction: column;
+                padding: 15px 5%;
+            }
+
+            .nav>div:first-child {
+                margin-bottom: 12px;
+                font-size: 22px;
+            }
+
+            .menu {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .menu a {
+                margin-left: 0;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -226,11 +568,10 @@
             <a href="#project">Project</a>
             <a href="#executives">Executives</a>
             <a href="#team">Team</a>
-            <a href="#join">Join</a>
+            <a href="javascript:void(0)" onclick="apply()">Join</a>
         </div>
     </div>
 
-    <!-- HERO -->
     <section class="hero">
         <div>
             <h1>Build The Future<br>with AI</h1>
@@ -242,18 +583,17 @@
         </div>
     </section>
 
-    <!-- STORY -->
     <section class="story">
-        <div class="story-text">아이디어에서 끝내지 않습니다</div>
-        <div class="story-text">우리는 팀을 만듭니다</div>
-        <div class="story-text">AI로 문제를 해결합니다</div>
+        <div class="story-text">아이디어에서 멈추지 않습니다</div>
+        <div class="story-text">우리는 실행합니다</div>
+        <div class="story-text">혼자가 아니라, 팀으로</div>
         <div class="story-text">결과로 증명합니다</div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about" class="fade">
         <h2>About NEXT WAVE</h2>
-        <p>AI를 활용하여 실제 서비스를 만드는 실행 중심 개발 동아리입니다.</p>
+
+        <p style="margin-top:30px; color:#94a3b8;">우리는 말이 아니라 결과를 만듭니다.</p>
 
         <div class="grid" style="margin-top:40px;">
             <div class="card">
@@ -271,42 +611,32 @@
         </div>
     </section>
 
-    <!-- STATS -->
     <section class="stats fade">
         <div>
-            <h3>15+</h3>
+            <h3>50+</h3>
             <p>Members</p>
         </div>
         <div>
-            <h3>3+</h3>
+            <h3>20+</h3>
             <p>Projects</p>
         </div>
         <div>
-            <h3>1+</h3>
+            <h3>5+</h3>
             <p>Awards</p>
         </div>
     </section>
 
-    <!-- PROJECT -->
     <section id="project">
         <h2>Projects</h2>
-        <div class="grid">
-            <div class="card fade">
-                <img src="https://picsum.photos/400/200">
-                <h3>AI 콘텐츠 100만 조회</h3>
-            </div>
-            <div class="card fade">
-                <img src="https://picsum.photos/401/200">
-                <h3>게임 개발</h3>
-            </div>
-            <div class="card fade">
-                <img src="https://picsum.photos/402/200">
-                <h3>웹 서비스</h3>
-            </div>
+        <div class="card fade" style="text-align: center; padding: 80px 20px; margin-top: 40px;">
+            <h3 style="font-size: 28px; line-height: 1.5; margin-bottom: 20px;">
+                아직 진행된 프로젝트가 없습니다.<br>
+                <span style="color:#38bdf8;">NEXT WAVE</span>의 첫 번째 프로젝트를 함께 만들어갈 분을 기다립니다.
+            </h3>
+            <p style="color: #94a3b8;">당신의 빛나는 아이디어가 우리의 첫 번째 포트폴리오가 됩니다.</p>
         </div>
     </section>
 
-    <!-- EXECUTIVES -->
     <section id="executives">
         <h2>Executives</h2>
         <div class="grid team">
@@ -325,13 +655,11 @@
         </div>
     </section>
 
-    <!-- TEAM -->
     <section id="team" class="fade">
         <h2>Team (Recruiting)</h2>
         <p>지금 당신이 NEXT WAVE의 다음 멤버입니다.</p>
     </section>
 
-    <!-- WHAT -->
     <section class="fade">
         <h2>What You Will Do</h2>
         <div class="grid">
@@ -341,7 +669,6 @@
         </div>
     </section>
 
-    <!-- WHO -->
     <section class="fade">
         <h2>Who We're Looking For</h2>
         <ul style="line-height:2; color:#94a3b8;">
@@ -351,56 +678,223 @@
         </ul>
     </section>
 
-    <!-- JOIN -->
-    <section id="join" class="join fade">
-        <h2>Join NEXT WAVE</h2>
-        <p id="dday"></p>
-        <p>지금 지원하지 않으면 다음 기회는 없습니다</p>
-        <button class="primary" onclick="apply()">지금 지원하기</button>
-    </section>
+    <!-- Join 섹션 제거 -->
+
+    <footer class="fade"
+        style="padding: 60px 10%; border-top: 1px solid rgba(255, 255, 255, 0.05); background: #0f172a; text-align: center; color: #64748b; font-size: 14px; line-height: 1.8;">
+        <div style="margin-bottom: 20px;">
+            <p style="margin: 0; font-size: 18px; font-weight: bold; color: white;">NEXT WAVE</p>
+            <p style="margin: 10px 0 0 0;">대표: 손성 | 이메일: nextwave.contact@gmail.com</p>
+            <p style="margin: 0;">전화번호: 010-0000-0000 | 주소: 서울특별시 OOO구 OOO로</p>
+        </div>
+        <div style="font-size: 12px; margin-top: 20px;">
+            &copy; 2026 NEXT WAVE. All rights reserved.
+        </div>
+    </footer>
 
     <div class="floating" onclick="apply()">지원하기</div>
+    <div class="floating-chat" onclick="toggleChat()">AI 상담 시작하기</div>
+
+    <!-- 챗봇 UI -->
+    <div id="chatBox" class="chat-box">
+        <div class="chat-header">
+            <span>NEXT WAVE AI 상담원</span>
+            <span class="chat-close" onclick="toggleChat()">✕</span>
+        </div>
+        <div id="chatMessages" class="chat-messages">
+            <div class="msg bot">안녕하세요! NEXT WAVE 지원 및 프로젝트에 대해 편안하게 물어보세요. 😊</div>
+            <div class="chat-options" id="chatOptions">
+                <button onclick="sendOption('활동 방식이 궁금해요!')">활동 방식</button>
+                <button onclick="sendOption('지원 조건이 어떻게 되나요?')">지원 조건</button>
+                <button onclick="sendOption('커리큘럼에 대해 알려주세요!')">커리큘럼</button>
+                <button onclick="openContactForm()">직접 연락하기</button>
+            </div>
+        </div>
+        <div class="chat-input-area" style="display: none;" id="chatInputArea">
+            <input type="text" id="chatInput" placeholder="질문을 입력해주세요..." onkeypress="handleEnter(event)" />
+            <button onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+
+    <!-- 직접 연락하기 모달 -->
+    <div class="contact-overlay" id="contactOverlay" onclick="closeContactForm()"></div>
+    <div class="contact-modal" id="contactModal">
+        <h3>직접 연락하기</h3>
+        <div class="contact-form-group"><label>이름</label><input type="text" id="c_name"></div>
+        <div class="contact-form-group"><label>이메일</label><input type="email" id="c_email"></div>
+        <div class="contact-form-group"><label>전화번호</label><input type="tel" id="c_phone"></div>
+        <div class="contact-form-group" style="display:flex; gap:10px;">
+            <div style="flex:1"><label>학교</label><input type="text" id="c_univ"></div>
+            <div style="flex:1"><label>학과</label><input type="text" id="c_major"></div>
+        </div>
+        <div class="contact-form-group"><label>학번</label><input type="text" id="c_studentId"></div>
+
+        <div class="contact-form-group">
+            <label>문의/지원 내용</label>
+            <textarea id="c_message" rows="4" placeholder="자유롭게 작성해주세요."
+                style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; color: white; font-family: inherit; resize: vertical;"></textarea>
+        </div>
+
+        <label class="contact-checkbox">
+            <input type="checkbox" id="contactConsent" onchange="toggleConsent()">
+            개인정보 수집 및 제공에 동의합니다. (NEXT_WAVE 담당자에게 전송됩니다.)
+        </label>
+
+        <div class="contact-buttons">
+            <button class="cancel-btn" onclick="closeContactForm()">취소</button>
+            <button class="submit-btn" id="contactSubmitBtn" disabled onclick="submitContactForm()">보내기</button>
+        </div>
+    </div>
 
     <script>
-        function apply() {
-            window.open("https://forms.gle/PpwiBS5v9Srg5CiK8", "_blank");
+        function apply() { window.open("https://forms.gle/PpwiBS5v9Srg5CiK8", "_blank"); }
+        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: "smooth" }); }
+
+        function toggleChat() {
+            document.getElementById("chatBox").classList.toggle("active");
         }
 
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+        function handleEnter(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        function sendOption(text) {
+            document.getElementById("chatOptions").style.display = 'none';
+            document.getElementById("chatInputArea").style.display = 'flex';
+            document.getElementById("chatInput").value = text;
+            sendMessage();
+        }
+
+        function openContactForm() {
+            document.getElementById('contactOverlay').classList.add('active');
+            document.getElementById('contactModal').classList.add('active');
+            document.getElementById('contactConsent').checked = false;
+            document.getElementById('contactSubmitBtn').disabled = true;
+        }
+
+        function closeContactForm() {
+            document.getElementById('contactOverlay').classList.remove('active');
+            document.getElementById('contactModal').classList.remove('active');
+        }
+
+        function toggleConsent() {
+            const btn = document.getElementById('contactSubmitBtn');
+            const checkbox = document.getElementById('contactConsent');
+            btn.disabled = !checkbox.checked;
+        }
+
+        async function submitContactForm() {
+            const btn = document.getElementById('contactSubmitBtn');
+            btn.innerText = '전송 중...';
+            btn.disabled = true;
+
+            const data = {
+                name: document.getElementById('c_name').value,
+                email: document.getElementById('c_email').value,
+                phone: document.getElementById('c_phone').value,
+                univ: document.getElementById('c_univ').value,
+                major: document.getElementById('c_major').value,
+                studentId: document.getElementById('c_studentId').value,
+                message: document.getElementById('c_message').value,
+                consent: document.getElementById('contactConsent').checked
+            };
+
+            if (!data.name || !data.email) {
+                alert("이름과 이메일은 필수입니다.");
+                btn.innerText = '보내기';
+                btn.disabled = false;
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:3000/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert("정보가 성공적으로 전송되었습니다! 담당자가 확인 후 연락드리겠습니다.");
+                    closeContactForm();
+                } else {
+                    alert("전송 중 서버 오류가 발생했습니다.");
+                }
+            } catch (e) {
+                alert("서버 연결에 실패했습니다. (이메일 설정 확인 필요)");
+            }
+            btn.innerText = '보내기';
+            btn.disabled = false;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("chatInput");
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const chat = document.getElementById("chatMessages");
+
+            // 유저 메세지 추가
+            chat.innerHTML += `<div class="msg user">${msg}</div>`;
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+
+            // 로딩 메세지 추가
+            const loadingId = "loading-" + Date.now();
+            chat.innerHTML += `<div id="${loadingId}" class="msg bot">상담원이 답변을 작성중입니다... 💭</div>`;
+            chat.scrollTop = chat.scrollHeight;
+
+            try {
+                const res = await fetch("http://localhost:3000/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: msg })
+                });
+
+                const data = await res.json();
+
+                if (document.getElementById(loadingId)) {
+                    document.getElementById(loadingId).remove();
+                }
+
+                if (data.reply) {
+                    chat.innerHTML += `<div class="msg bot">${data.reply.replace(/\n/g, '<br>')}</div>`;
+                } else {
+                    chat.innerHTML += `<div class="msg bot">죄송합니다. 오류가 발생했습니다.</div>`;
+                }
+                chat.scrollTop = chat.scrollHeight;
+
+            } catch (e) {
+                if (document.getElementById(loadingId)) {
+                    document.getElementById(loadingId).remove();
+                }
+                chat.innerHTML += `<div class="msg bot">서버에 연결할 수 없습니다. (Node 서버가 실행중인지 확인해주세요)</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }
         }
 
         const fades = document.querySelectorAll(".fade");
         window.addEventListener("scroll", () => {
             fades.forEach(el => {
                 const top = el.getBoundingClientRect().top;
-                if (top < window.innerHeight - 100) {
-                    el.classList.add("show");
-                }
+                if (top < window.innerHeight - 100) { el.classList.add("show"); }
             });
         });
 
-        // D-DAY
-        const deadline = new Date("2026-04-01");
-        const today = new Date();
-        const diff = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
-        document.getElementById("dday").innerText = `지원 마감 D-${diff}`;
+        // D-Day 카운트다운 스크립트 제거 (Join 섹션 삭제됨)
 
-        // STORY
         const texts = document.querySelectorAll(".story-text");
-        const bg = ["#020617", "#0a2540", "#0f3b5f", "#124e66"];
-
+        /* 더 깊고 차분한 다크 네이비 톤으로 배경색 부드럽게 전환 */
+        const bg = ["#020617", "#050a15", "#070e1b", "#091221"];
         window.addEventListener("scroll", () => {
             const y = window.scrollY;
             const h = window.innerHeight;
-
             texts.forEach((t, i) => {
                 if (y > h * i && y < h * (i + 1)) {
                     t.classList.add("show");
-                    document.body.style.background = bg[i];
-                } else {
-                    t.classList.remove("show");
-                }
+                    document.body.style.backgroundColor = bg[i];
+                } else { t.classList.remove("show"); }
             });
         });
     </script>
